@@ -7,7 +7,7 @@ export function Footer() {
                     <span className="font-bold">OFFLIMITS AI</span>
                 </div>
                 <div className="text-sm text-muted-foreground text-center md:text-right">
-                    © 2026 OFFLIMITS AI. All rights reserved.
+                    © 2026 OFFLIMITS AI CORP. All rights reserved.
                 </div>
             </div>
         </footer>

@@ -67,7 +67,7 @@ export function FeaturesSection() {
                     </p>
                 </div>
 
-                <BentoGrid className="max-w-5xl mx-auto">
+                <BentoGrid className="max-w-3xl mx-auto auto-rows-[20rem]">
                     {features.map((feature) => (
                         <BentoCard key={feature.name} {...feature} />
                     ))}
