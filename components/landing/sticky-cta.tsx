@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { cn } from "cn"
 
@@ -39,7 +40,7 @@ export function StickyCta() {
         visible ? "translate-y-0" : "translate-y-[110%]",
       )}
     >
-      <Button className="min-h-13 w-full justify-between">
+      <Button nativeButton={false} render={<Link href="/book" />} className="min-h-13 w-full justify-between">
         Book a strategy call
         <ArrowRight />
       </Button>

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -26,6 +27,8 @@ export function ClosingCta() {
         </h2>
         <Button
           variant="outline"
+          nativeButton={false}
+          render={<Link href="/book" />}
           data-anim="rise"
           data-delay="400"
           className="mt-9 min-h-13 w-full justify-between border-background bg-transparent px-1 text-background hover:bg-background/10 hover:text-background active:bg-background/20 lg:mt-2 lg:min-h-0"

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -58,7 +59,11 @@ export function Hero() {
               <p className="text-[17px] leading-[27px] text-foreground/80 lg:leading-7">
                 Our operating knowledge plus AI for everything that can run without you.
               </p>
-              <Button className="min-h-13 w-full justify-between lg:mt-2 lg:min-h-0">
+              <Button
+                nativeButton={false}
+                render={<Link href="/book" />}
+                className="min-h-13 w-full justify-between lg:mt-2 lg:min-h-0"
+              >
                 Book a strategy call
                 <ArrowRight />
               </Button>

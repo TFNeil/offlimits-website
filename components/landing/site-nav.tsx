@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { MobileMenu } from "@/components/landing/mobile-menu"
 import { NAV_LINKS } from "@/components/landing/nav-links"
@@ -19,7 +21,9 @@ export function SiteNav() {
             {link.label}
           </a>
         ))}
-        <Button>Book a strategy call</Button>
+        <Button nativeButton={false} render={<Link href="/book" />}>
+          Book a strategy call
+        </Button>
       </nav>
       <div className="lg:hidden">
         <MobileMenu />

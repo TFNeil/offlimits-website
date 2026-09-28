@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import Link from "next/link"
 import { ArrowRight, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -59,7 +60,12 @@ export function MobileMenu() {
           ))}
         </nav>
         <div className="gutter mt-auto pt-5 pb-8">
-          <Button className="min-h-13 w-full justify-between" onClick={() => setOpen(false)}>
+          <Button
+            nativeButton={false}
+            render={<Link href="/book" />}
+            className="min-h-13 w-full justify-between"
+            onClick={() => setOpen(false)}
+          >
             Book a strategy call
             <ArrowRight />
           </Button>
