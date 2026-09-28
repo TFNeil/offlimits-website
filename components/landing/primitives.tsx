@@ -18,10 +18,10 @@ export function SectionHeading({
 }) {
   return (
     <div data-anim="rise">
-      <span className="eyebrow mb-5 block text-brand-700">{eyebrow}</span>
+      <span className="eyebrow mb-4 block text-brand-700 lg:mb-5">{eyebrow}</span>
       <h2
         className={cn(
-          "font-heading text-[44px] leading-[1.05] font-extrabold tracking-[-0.02em]",
+          "font-heading text-[36px] leading-[1.05] font-extrabold tracking-[-0.02em] lg:text-[44px]",
           className,
         )}
       >

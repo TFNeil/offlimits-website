@@ -7,10 +7,13 @@ import { Marquee } from "@/components/landing/marquee"
 import { Container, Rule } from "@/components/landing/primitives"
 import { Program } from "@/components/landing/program"
 import { SiteNav } from "@/components/landing/site-nav"
+import { StickyCta } from "@/components/landing/sticky-cta"
 
 export default function Home() {
   return (
-    <Motion className="overflow-x-hidden">
+    // overflow-x-clip, not -hidden: hidden would turn this into a scroll
+    // container and stop the mobile header from sticking.
+    <Motion className="overflow-x-clip">
       <SiteNav />
       <main>
         <Hero />
@@ -24,10 +27,11 @@ export default function Home() {
         </Container>
         <ClosingCta />
       </main>
-      <footer className="gutter mx-auto flex w-full max-w-[1280px] flex-wrap justify-between gap-3 py-8 text-[13px] text-foreground/70">
+      <footer className="gutter mx-auto flex w-full max-w-[1280px] flex-col gap-1 pt-6 pb-8 text-[13px] leading-5 text-foreground/70 lg:flex-row lg:flex-wrap lg:justify-between lg:gap-3 lg:py-8">
         <span>© 2026 OFFLIMITS AI</span>
         <span>Scaling for service businesses</span>
       </footer>
+      <StickyCta />
     </Motion>
   )
 }

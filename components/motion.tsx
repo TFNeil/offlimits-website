@@ -6,13 +6,14 @@ import { useEffect, useRef, type ReactNode } from "react"
  * Scroll-triggered entrance animations, driven by data attributes so the
  * sections themselves stay server components:
  *
- *   data-anim="rise|fade|mask|drop|draw|pop|slide"  keyframe to play
+ *   data-anim="rise|fade|mask|drop|draw|drawY|pop|slide"  keyframe to play
  *   data-delay / data-dur                          ms (defaults 0 / 900)
  *   data-count="1400"                              count a "90" / "+38%" up from 0 over N ms
  *   data-marquee="40000"                           loop translateX(0 → -50%) every N ms
  *
  * mask/drop wait for their parent to enter view (the parent clips them).
- * Everything is skipped under prefers-reduced-motion.
+ * Anything already on screen starts immediately. Everything is skipped under
+ * prefers-reduced-motion.
  */
 
 const EASE = "cubic-bezier(.2,.7,0,1)"
@@ -24,6 +25,7 @@ const KEYFRAMES: Record<string, Keyframe[]> = {
   mask: [{ transform: "translateY(105%)" }, { transform: "none" }],
   drop: [{ transform: "translateY(-120%)", opacity: 0 }, { transform: "none", opacity: 1 }],
   draw: [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+  drawY: [{ transform: "scaleY(0)" }, { transform: "scaleY(1)" }],
   pop: [{ transform: "scale(0)" }, { transform: "scale(1.6)", offset: 0.6 }, { transform: "scale(1)" }],
   slide: [{ opacity: 0, transform: "translateX(-24px)" }, { opacity: 1, transform: "none" }],
 }
@@ -66,10 +68,10 @@ export function Motion({ className, children }: { className?: string; children: 
       const match = final.match(/^(\D*)(\d+)(.*)$/)
       if (!match) return
       const [, pre, num, post] = match
-      text.nodeValue = `${pre}0${post}`
       const counter = { node: text, final, raf: 0, timer: 0 }
       counters.push(counter)
       onEnter(node, () => {
+        text.nodeValue = `${pre}0${post}`
         counter.timer = window.setTimeout(() => {
           const duration = Number(node.dataset.count)
           const start = performance.now()
@@ -103,9 +105,29 @@ export function Motion({ className, children }: { className?: string; children: 
       },
       { rootMargin: "0px 0px -40px 0px" },
     )
-    pending.forEach((_, target) => io.observe(target))
+    const viewportHeight = window.innerHeight
+    pending.forEach((fns, target) => {
+      const rect = target.getBoundingClientRect()
+      if (rect.bottom > 0 && rect.top < viewportHeight) fns.forEach((fn) => fn())
+      else io.observe(target)
+    })
+
+    // A tab opened in the background never paints, so nothing would ever
+    // play; finish everything rather than leave the page blank.
+    const failsafe = window.setTimeout(() => {
+      if (!document.hidden) return
+      anims.forEach((a) => {
+        if (a.effect?.getTiming().iterations !== Infinity) a.finish()
+      })
+      counters.forEach((c) => {
+        cancelAnimationFrame(c.raf)
+        clearTimeout(c.timer)
+        c.node.nodeValue = c.final
+      })
+    }, 3000)
 
     return () => {
+      clearTimeout(failsafe)
       io.disconnect()
       anims.forEach((a) => a.cancel())
       counters.forEach((c) => {

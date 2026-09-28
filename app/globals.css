@@ -175,6 +175,9 @@
   .motion [data-anim="draw"] {
     transform: scaleX(0);
   }
+  .motion [data-anim="drawY"] {
+    transform: scaleY(0);
+  }
   .motion [data-anim="pop"] {
     transform: scale(0);
   }
